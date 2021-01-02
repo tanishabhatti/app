@@ -8,7 +8,7 @@
 }
 
 .App-header {
-  background-color: #222;
+  background: linear-gradient(#03A9F4, #3f51b5);
   height: 150px;
   padding: 20px;
   color: white;
@@ -20,6 +20,40 @@
 
 .App-intro {
   font-size: large;
+}
+
+input {
+  height: 28px;
+  width: 350px;
+  margin-right: 20px;
+  text-align: center;
+}
+
+button {
+  background: #03A9F4;
+  border: 3px double #fff;
+  outline: none;
+  padding: 15px;
+  margin: 10px;
+  font-weight: bold;
+  color: white;
+}
+
+.output, .blue {
+  color: #03A9F4;
+}
+
+.purple {
+  color: #3f51b5;
+}
+
+.purple-button {
+  background: #3f51b5;
+}
+
+.copyright {
+  color: #888;
+  font-size: 12px;
 }
 
 @keyframes App-logo-spin {

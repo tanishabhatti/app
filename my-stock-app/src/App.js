@@ -27,48 +27,57 @@ class App extends Component {
     this.state = {
       name: "",
       price: "",
-      date : ""
+      date : "",
+      colors: ""
     }
   }
 
   /*
-  //getBatchStockAPI method accepts a stock name from user
+  //getTimeSeriesDailyAPI method accepts a stock name from user
   //otherwise if left empty, advices the user to input a stock name
 
   //method fetches the data from API
   //data is sent to getStockInfo method for processing
   */
-  getBatchStockAPI(newStockName){
+  getTimeSeriesDailyAPI(newStockName){
     (newStockName===""||newStockName===undefined)?alert("Please enter a stock name"):
-          axios.get(axios.get('https://www.alphavantage.co/query?function=BATCH_STOCK_QUOTES&symbols=MSFT,FB,AAPL&apikey=demo')
-          .then(res=>{this.getStockInfo(res,newStockName)})
-        )
-    
+    axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${newStockName}&apikey=demo`)
+      .then(res=>{this.getStockInfo(res, 'Time Series (Daily)', 'blue', newStockName)});
   }
   /*
-  //getStockInfo method fetches the data for that stock name
+  //getTimeSeriesMonthlyAPI method accepts a stock name from user
+  //otherwise if left empty, advices the user to input a stock name
+
+  //method fetches the data from API
+  //data is sent to getStockInfo method for processing
+  */
+ getTimeSeriesMonthlyAPI(newStockName){
+  (newStockName===""||newStockName===undefined)?alert("Please enter a stock name"):
+  axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=${newStockName}&apikey=demo`)
+    .then(res=>{this.getStockInfo(res, 'Monthly Time Series', 'purple', newStockName)});
+}
+  /*
+  //getStockInfo method fetches the data for that stock name based on latest date
   //sends the data to the setStockInfo method
   //otherwise notifies user their stock is not available
   */
-  getStockInfo(json,newStockName){
-   
-          const stockreq = json.data['Stock Quotes'].filter((stock) => [{symbol: stock['1. symbol']}]).find(stock => stock['1. symbol'] === newStockName);
-          (stockreq===undefined)?alert("Sorry stock not available"):this.setStockInfo(stockreq,newStockName)
-      
+  getStockInfo(json, stockQueryParam, colorParam, newStockName){
+    const stockreq = json.data[stockQueryParam];
+    (stockreq===undefined)?alert("Sorry stock not available"):this.setStockInfo(Object.entries(stockreq)[0],colorParam,newStockName);
   }
   /*
   //setStockInfo method sets the state to:
   //1. stock name,
-  //2. price from the API 
-  //3. timestamp from the API
+  //2. price: closing price from the API 
+  //3. timestamp: latest quote date from the API
   */
-  setStockInfo(userStockRequest, stockName){       
-          this.setState({
-                  name: stockName,
-                  price: userStockRequest['2. price'], 
-                  date: userStockRequest['4. timestamp']    
-          });
-          
+  setStockInfo([key,value],colorParam,stockName){  
+    this.setState({
+            name: stockName,
+            price: value['2. high'], 
+            date: key,
+            colors: colorParam,
+    });        
   }
 
   /*
@@ -77,30 +86,31 @@ class App extends Component {
   //1. the user can input the stock symbol
   //2. the user can hit the Get Price button
   //on click:
-  //1. the response is the sent to the server with getBatchStockAPI method
-  //2. the getBatchStockAPI method will provide the stock data to user - price and timestamp
-  // (getBatchStockAPI) method documentation provides details
+  //1. the response is the sent to the server with getTimeSeriesDailyAPI method
+  //2. the getTimeSeriesDailyAPI or getTimeSeriesMonthlyAPI method will provide the stock data to user - price and timestamp
+  // (getTimeSeriesDailyAPI) or (getTimeSeriesMonthlyAPI) method documentation provides details
   */
   render() {
-    
+    const classesOutput = `output ${this.state.colors}`;
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Stock Ticker</h1>
         </header>
         <br/>
-        <p>Stock Ticker - shows selection between two stocks and auto refresh seamlessly</p>
-        <p>FB, MSFT, AAPL</p>
+        <p>Stock Ticker - shows selection between two stocks quote API types (daily vs monthly) and auto refresh seamlessly</p><br/>
+        <p>IBM</p>
        <label>
-       <input type="text" name="Enter Stock Name" placeholder="Enter Stock Name" ref={(input)=>{this.state.name=input;}}/></label>
+       <input type="text" name="Enter Stock Name" placeholder="Enter Stock Name - IBM" ref={(input)=>{this.state.name=input;}}/></label><br/>
         
-        <button onClick={()=>this.getBatchStockAPI(this.state.name.value.toUpperCase())}> Get Price </button>
-        <h1> Stock: {this.state.name}</h1>
-        <h1>Price: ${this.state.price}<br/></h1>
-        Time of Stock Price: {this.state.date}<br/>
+        <button onClick={()=>this.getTimeSeriesDailyAPI(this.state.name.value.toUpperCase())}> Get Price (Daily Latest, Closing Price) </button>
+        <button className="purple-button" onClick={()=>this.getTimeSeriesMonthlyAPI(this.state.name.value.toUpperCase())}> Get Price (Monthly, Closing Price) </button><br/><br/>
+        <h1> Stock: <span className={classesOutput}>{this.state.name}</span></h1>
+        <h1>Close Price:  <span className={classesOutput}>${this.state.price}</span><br/></h1>
+        Date of Stock Price:  <span className={classesOutput}>{this.state.date}</span><br/>
        
-       <p><br/><br/><br/>Copyright Reserved © Tanisha Bhatti<br/><br/>This material and code is subject to copyright.<br/> Copying is strictly prohibited. </p>
+       <p className="copyright"><br/><br/><br/>Copyright Reserved © Tanisha Bhatti<br/><br/>This material and code is subject to copyright.<br/> Copying is strictly prohibited. </p>
 
       </div>
     );
