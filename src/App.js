@@ -97,10 +97,10 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Stock Ticker</h1>
-          <p>Stock Ticker - shows selection between two stocks quote API types (daily vs monthly) and auto refresh seamlessly</p><br/>
+          <p><i>Stock Ticker - shows selection between two stocks quote API types (daily vs monthly) and auto refresh seamlessly</i></p><br/>
         </header>
         <br/>
-        <p>IBM</p>
+        <p>&nbsp;</p>
        <label>
        <input type="text" name="Enter Stock Name" placeholder="Enter Stock Name - IBM" ref={(input)=>{this.state.name=input;}}/></label><br/>
         

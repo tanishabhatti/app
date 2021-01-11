@@ -8,7 +8,7 @@
 }
 
 .App-header {
-  background: linear-gradient(#03A9F4, #3f51b5);
+  background: linear-gradient(#888, #555);
   height: 150px;
   padding: 20px;
   color: white;
@@ -24,8 +24,11 @@
 
 input {
   height: 28px;
-  width: 350px;
+  width: 500px;
   margin-right: 20px;
+  margin-bottom: 50px;
+  padding: 20px;
+  font-size: 24px;
   text-align: center;
 }
 
