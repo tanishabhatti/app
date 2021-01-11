@@ -104,10 +104,10 @@ class App extends Component {
        <label>
        <input type="text" name="Enter Stock Name" placeholder="Enter Stock Name - IBM" ref={(input)=>{this.state.name=input;}}/></label><br/>
         
-        <button onClick={()=>this.getTimeSeriesDailyAPI(this.state.name.value.toUpperCase())}> Get Price (Daily Latest, Closing Price) </button>
-        <button className="purple-button" onClick={()=>this.getTimeSeriesMonthlyAPI(this.state.name.value.toUpperCase())}> Get Price (Monthly, Closing Price) </button><br/><br/>
+        <button onClick={()=>this.getTimeSeriesDailyAPI(this.state.name.value.toUpperCase())}> Get Price (Daily Latest, High Price) </button>
+        <button className="purple-button" onClick={()=>this.getTimeSeriesMonthlyAPI(this.state.name.value.toUpperCase())}> Get Price (Monthly, High Price) </button><br/><br/>
         <h1> Stock: <span className={classesOutput}>{this.state.name}</span></h1>
-        <h1>Close Price:  <span className={classesOutput}>${this.state.price}</span><br/></h1>
+        <h1>High Price:  <span className={classesOutput}>${this.state.price}</span><br/></h1>
         Date of Stock Price:  <span className={classesOutput}>{this.state.date}</span><br/>
        
        <p className="copyright"><br/><br/><br/>Copyright Reserved © Tanisha Bhatti<br/><br/>This material and code is subject to copyright.<br/> Copying is strictly prohibited. </p>
